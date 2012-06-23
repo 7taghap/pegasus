@@ -56,11 +56,12 @@ $.fn.getSumOfRow = function(row) {
 
 
 function removeRow(tableId, index,url) {
-	if (url==null || url == undefined)
-		url="deleteItem/"+index+".html";
+
 	var rows = $("#"+tableId).find('tbody tr').length;
 	if (rows > 0) {
-		$.ajax({
+            
+            if (url!=null || url !=undefined) {
+                $.ajax({
 			type:"get",
 			url:url,
 			success:function(data){ 
@@ -69,6 +70,11 @@ function removeRow(tableId, index,url) {
 			}
 			
 		});
+            }
+            else {
+                $("#"+tableId).find('tbody tr').eq(index).remove();
+            }
+		
 		
 	}
 	return false;
@@ -98,19 +104,28 @@ $.fn.addData = function (aDataSupplied,removable) {
 
 }
 
+$.fn.getRowCount = function() {
+    var currentIdx = $(this).find('tbody tr').length;
+    alert ('currentIdx' + currentIdx);
+    return currentIdx;
+}
+
 $.fn.appendProductDtlHiddenInputField = function (aDataSupplied,x) {
     var aDataIn = ($.isArray(aDataSupplied) ?
 			aDataSupplied.slice() : $.extend( true, {}, aDataSupplied));
 //    for(var x=0; x < aDataIn.length; x++ ) {
 //        var data = aDataIn[x];
+        var div = '<div id="input_'+x+'">';
         var dtlName = '<input type="hidden" name="ProductDtl['+x+'][dtl_name]" value="'+ aDataIn[0] + '</input>';
         var price = '<input type="hidden" name="ProductDtl['+x+'][price]" value="'+ aDataIn[1] + '</input>';
-        var sellingQty = '<input type="hidden" name="ProductDtl['+x+'][price]" value="'+ aDataIn[1] + '</input>';
-        var sugPrice = '<input type="hidden" name="ProductDtl['+x+'][price]" value="'+ aDataIn[1] + '</input>';
-        var qtyOnHand = '<input type="hidden" name="ProductDtl['+x+'][price]" value="'+ aDataIn[1] + '</input>';
-        var unit = '<input type="hidden" name="ProductDtl['+x+'][price]" value="'+ aDataIn[1] + '</input>';
-        
-      $(this).append(dtlName);
+        var sellingQty = '<input type="hidden" name="ProductDtl['+x+'][sellingQty]" value="'+ aDataIn[2] + '</input>';
+        var sugPrice = '<input type="hidden" name="ProductDtl['+x+'][sugPrice]" value="'+ aDataIn[3] + '</input>';
+        var qtyOnHand = '<input type="hidden" name="ProductDtl['+x+'][qtyOnHand]" value="'+ aDataIn[4] + '</input>';
+        var unit = '<input type="hidden" name="ProductDtl['+x+'][unit]" value="'+ aDataIn[5] + '</input>';
+        var endDiv = '</div>';
+       div = div + dtlName + price + sellingQty + sugPrice + qtyOnHand + unit + endDiv;
+       alert(div);
+      $(this).append(div);
    
 //    }	
 }
