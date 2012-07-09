@@ -1,5 +1,6 @@
 <div class="form">
 
+    <div id="product">
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'product-form',
 	'enableAjaxValidation'=>false,
@@ -7,7 +8,7 @@
 
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
-	<?php echo $form->errorSummary($model); ?>
+	<?php echo $form->errorSummary($model,$productDtl); ?>
         <table>
               <tr>
                 <td><?php echo $form->labelEx($model,'product_name'); ?></td>
@@ -54,13 +55,16 @@
                 <td><?php echo $form->labelEx($model,'imgfile'); ?></td>
 		<td><?php echo $form->textField($model,'imgfile',array('size'=>10,'maxlength'=>255)); ?></td>
 		<td><?php echo $form->error($model,'imgfile'); ?></td>
+                
             </tr>
-         
+          
         </table>
+    </div>
         <!--product dtls -->
+        <div><input type="button" value="addItem" toptions="type = dom, effect = fade, overlayClose = 1" href="#productDtlForm"/></div>
         <table id="tblProductDtls">
             <thead>
-                <tr><th colspan="5"><input type="button" id="addItem" href="#productDtlForm" value="Add Item" style="float:right;"/></th></tr>
+               
                 <tr>
                     <th>Item Name</th>
                     <th>Price</th>
@@ -71,11 +75,31 @@
                 </tr>
             </thead>
             <tbody>
+                  <?php 
                   
+          
+                    foreach($model->productDtls as $key=>$dtl) {
+                        if (is_object($dtl)) {
+                        echo"<tr>";
+                            echo "<td>$dtl->dtl_name</td>";
+                            echo "<td>$dtl->price</td>";
+                            echo "<td>$dtl->selling_qty</td>";
+                            echo "<td>$dtl->sug_price</td>";
+                            echo "<td>$dtl->qty_on_hand</td>";  
+                            echo "<td>".$dtl->unit->name."</td>";
+                            echo "<td><a href=\"$key\" onclick=\"$(this).deleteItem();return false;\">delete</a></td>";
+                        echo "</tr>";
+                        }
+                    
+                       ///echo $form->hiddenField($dtl,'dtl_name'); 
+                    }
+                  
+                  ?>
             </tbody>
+            
         </table>
-        <div id="hiddenFields" style="display:none;"></div>
-         <input type="button" id="addItem" href="#productDtlForm" value="Add Item" style="float:right;"/>
+   
+      
         
 
 	<div class="row buttons">
@@ -90,7 +114,13 @@
 
 
    <div  style="display:none">
-    <div id="productDtlForm">
+       
+    <di id="productDtlForm">
+        
+<?php $form=$this->beginWidget('CActiveForm', array(
+	'id'=>'productDtl-form',
+	'enableAjaxValidation'=>false,
+)); ?>
         <h1> Product Detail Form </h1>
     <table>
         <tr>
@@ -126,7 +156,7 @@
         </tr>
     </table>
         <div> <input type="button" value="Cancel" onclick="$.fancybox.close();return false;"/>
-            <input type="button" value="Add" id="addDetailItem"/> 
+            <input type="button" value="Add" onclick="$(this).ajaxSubmit('productDtl-form')"/> 
         </div>
     </div>
-</div>
+<?php $this->endWidget(); ?>

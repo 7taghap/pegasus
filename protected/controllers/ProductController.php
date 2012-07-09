@@ -66,12 +66,25 @@ class ProductController extends Controller
 	public function actionCreate()
 	{
 		$model=new Product;
-//                $model->productDtls = array(new ProductDtl,new ProductDtl);
+                $dtls = array();
+                                   
                 $productDtl = new ProductDtl;
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-                print_r($_POST);
-        
+               if(isset($_SESSION['dtls'])) {
+                   $dtls = $_SESSION['dtls'];
+               }
+               if(isset($_POST['ProductDtl'])) {
+                    $dtl = new ProductDtl;
+                    $dtl->attributes = $_POST['ProductDtl'];
+                    $dtl->unit = UnitConversion::model()->find($dtl->package_type);
+                    print_r($dtl->unit->attributes);
+                    $dtls[] = $dtl;
+                    print_r($dtls);
+                    $_SESSION['dtls']=$dtls;
+                    
+                }
+                
 		if(isset($_POST['Product']))
 		{
                     $txn = Yii::app()->db->beginTransaction();
@@ -84,7 +97,14 @@ class ProductController extends Controller
 //			if($model->save())
 //				$this->redirect(array('view','id'=>$model->product_id));
 		}
-
+                if (isset($_POST['id'])) {
+                    unset($_SESSION['dtls'][$_POST['id']]);
+                }
+                if (isset($_SESSION['dtls']))
+                    $model->productDtls = $_SESSION['dtls'];
+                else 
+                    $model->productDtls=$dtls;
+     
 		$this->render('create',array(
 			'model'=>$model,
                         'productDtl'=>$productDtl

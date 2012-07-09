@@ -50,7 +50,7 @@ class ProductDtl extends CActiveRecord
 			array('price_type, status, product_id, package_type, status_id', 'numerical', 'integerOnly'=>true),
 			array('price, qty_on_hand, selling_qty, sug_price', 'numerical'),
 			array('created_by, last_updated_by, dtl_name', 'length', 'max'=>255),
-			array('created_date, last_updated_date', 'safe'),
+			array('price_type,status, product_id,package_type,price,qty_on_hand,selling_qty,sug_price,dtl_name,last_updated_date', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('product_dtl_id, created_by, created_date, last_updated_by, last_updated_date, price, price_type, qty_on_hand, selling_qty, status, sug_price, product_id, package_type, dtl_name, status_id', 'safe', 'on'=>'search'),

@@ -13,6 +13,8 @@
   
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" />
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/form.css" />
+        	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/style.css" />
+        <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/top_up-min.js?libs=core&fast_mode=1"/>
         
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 </head>
